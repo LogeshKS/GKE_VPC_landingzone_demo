@@ -1,110 +1,54 @@
-resource "google_service_account" "kubernetes" {
-  account_id = var.svcaccountid
-  project = var.projectid
-}
-
-
-# https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/container_cluster
-resource "google_container_cluster" "gke" {
+# GKE Cluster Configuration (multi-region)
+resource "google_container_cluster" "gke_cluster" {
+  count        = length(var.regions)
+  name         = "${var.gke_cluster_name}-${var.regions[count.index]}"
+  location     = var.regions[count.index]
+  project      = var.projectid
+  initial_node_count = 1
+  min_master_version = "latest"
   
-  project                  = var.projectid
-  name                     = var.gkeclustername
-  location                 = var.regions[0]
-  remove_default_node_pool = true
-  initial_node_count       = 2
-  network                  = var.vpcid
-  subnetwork               = var.gkesubnet
   
-  logging_service          = "logging.googleapis.com/kubernetes"
-  monitoring_service       = "monitoring.googleapis.com/kubernetes"
-  networking_mode          = "VPC_NATIVE"
-
-  # Optional, if you want multi-zonal cluster
-  node_locations = [var.regions]
-
-  addons_config {
-    http_load_balancing {
-      disabled = true
-    }
-    horizontal_pod_autoscaling {
-      disabled = false
-    }
-  }
-
-  release_channel {
-    channel = "REGULAR"
-  }
-
-  workload_identity_config {
-    workload_pool = "devops-v4.svc.id.goog"
-  }
-
-  ip_allocation_policy {
-    cluster_secondary_range_name  = "pod-ip-range"
-    services_secondary_range_name = "services-ip-range"
-  }
-
+  # Network settings
+  network    = var.vpcid
+  subnetwork = var.gke_cluster_subnetwork[count.index]
+  
+  # Enable private cluster configuration
   private_cluster_config {
-    enable_private_nodes    = true
-    enable_private_endpoint = false
-    master_ipv4_cidr_block  = "172.16.0.0/28"
+    enable_private_nodes = true
+    enable_private_endpoint = true
   }
 
+  # IP Allocation Policy
+  ip_allocation_policy {
+    cluster_ipv4_cidr_block = var.gke_cluster_ipv4_cidr[count.index] # Modify as per your requirement
+    services_ipv4_cidr_block = var.gke_services_ipv4_cidr[count.index]  # Modify as per your requirement
+  }
 }
 
+# GKE Node Pool Configuration
+resource "google_container_node_pool" "node_pool" {
+  count       = length(var.regions)
+  name        = "default-node-pool-${var.regions[count.index]}"
+  cluster     = google_container_cluster.gke_cluster[count.index].name
+  location    = var.regions[count.index]
 
-#Node pool creation
-resource "google_container_node_pool" "general" {
-  name       = "node_pool_general"
-  cluster    = google_container_cluster.gke.id
-  node_count = 2
-
-  management {
-    auto_repair  = true
-    auto_upgrade = true
-  }
-
+  # Node pool configuration
+  node_count  = 1
   node_config {
-    preemptible  = false
-    machine_type = "e2-small"
+    machine_type = "e2-medium"
+    disk_size_gb = 100
+    preemptible  = true
 
-    labels = {
-      User = "DevOps_Guy"
-    }
-
-    service_account = google_service_account.kubernetes.email
     oauth_scopes = [
       "https://www.googleapis.com/auth/cloud-platform"
     ]
   }
-}
 
-resource "google_container_node_pool" "spot" {
-  name    = "node_pool_spot"
-  cluster = google_container_cluster.primary.id
-
-  management {
-    auto_repair  = true
-    auto_upgrade = true
-  }
-
+  # Autoscaling for node pool
   autoscaling {
-    min_node_count = 0
+    min_node_count = 1
     max_node_count = 5
   }
 
-  node_config {
-    preemptible  = true
-    machine_type = "e2-small"
-
-    labels = {
-      User = "DevOps_Guy"
-    }
-
-
-    service_account = google_service_account.kubernetes.email
-    oauth_scopes = [
-      "https://www.googleapis.com/auth/cloud-platform"
-    ]
-  }
+  depends_on = [google_container_cluster.gke_cluster]
 }

@@ -71,5 +71,3 @@ resource "google_compute_router_nat" "natgateway" {
     depends_on = [ google_compute_router.nat_router ]
 
 }
-
-
