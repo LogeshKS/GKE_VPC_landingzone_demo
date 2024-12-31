@@ -11,7 +11,6 @@ terraform {
 provider "google" {
   project = var.projectid
   region  = var.regions[0]  # Set the default region if needed (used for provider context)
-  zone    = var.zones[0]    # Set a default zone (used for compute resources like instance creation)
 }
 
 provider "google" {

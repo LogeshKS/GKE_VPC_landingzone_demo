@@ -1,11 +1,11 @@
 env = "dev"
-projectid = 
+projectid = "dulcet-glazing-444913-i8"
 regions = [ "value" ]
 
 #vpc
 vpcname = "vpc"
-routing_mode = ""
-mtu = ""
+routing_mode = "REGIONAL"
+mtu = "1500"
 
 public_subnetname = "public-subnet"
 public_subnet_cidr_range = "192.168.1.0/24"
