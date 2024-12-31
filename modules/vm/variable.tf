@@ -4,7 +4,6 @@ variable "bastionmachinetype" {}
 variable "regions"{}
 variable "private_subnetid" {}
 variable "public_subnetid" {}
-variable "jenkinsmachinetype" {}
 variable "bastiontags" {}
 variable "jenkinstags" {}
 variable "jenkinsmachinetype" {}

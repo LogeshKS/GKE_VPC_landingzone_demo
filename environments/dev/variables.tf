@@ -36,3 +36,31 @@ variable "nat-routername" {}
 #natgateway
 variable "natgateway" {}
 
+
+variable "bastionhostname" {}
+variable "bastion_image" {}
+variable "bastionmachinetype" {}
+variable "private_subnetid" {}
+variable "public_subnetid" {}
+variable "bastiontags" {}
+variable "jenkinstags" {}
+variable "jenkinsmachinetype" {}
+variable "jenkinsimage" {}
+variable "jenkinshostname" {}
+variable "vpcid" {}
+variable "bastion_trustedip" {}
+variable "jenkins_trustedip" {}
+variable "gkeclustertags" {}
+
+variable "gke_cluster_name" {
+  
+}
+variable "gke_cluster_subnetwork" {
+  
+}
+variable "gke_cluster_ipv4_cidr" {
+  
+}
+variable "gke_services_ipv4_cidr" {
+  
+}
