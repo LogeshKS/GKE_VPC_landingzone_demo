@@ -9,6 +9,7 @@ resource "google_container_cluster" "gke_cluster" {
   
   
   # Network settings
+  networking_mode = "VPC_NATIVE"
   network    = var.vpcid
   subnetwork = var.gke_cluster_subnetwork[count.index]
   
@@ -20,8 +21,9 @@ resource "google_container_cluster" "gke_cluster" {
 
   # IP Allocation Policy
   ip_allocation_policy {
-    cluster_ipv4_cidr_block = var.gke_cluster_ipv4_cidr[count.index] # Modify as per your requirement
-    services_ipv4_cidr_block = var.gke_services_ipv4_cidr[count.index]  # Modify as per your requirement
+    
+    cluster_secondary_range_name  = "pod-ip-range"
+    services_secondary_range_name = "services-ip-range"
   }
 }
 

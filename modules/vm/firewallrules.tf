@@ -8,7 +8,7 @@ resource "google_compute_firewall" "allow_ssh_bastion" {
       ports = ["22"]
     }
 
-    source_ranges = [var.bastion_trustedip]# Replace with your trusted IP
+    source_ranges = [module.vm.bastionip]# Replace with your trusted IP
     target_tags = [var.bastiontags]
 
 }
@@ -23,7 +23,7 @@ resource "google_compute_firewall" "allow_http_jenkins" {
       ports = ["8080", "9090"]
     }
 
-    source_ranges = [var.jenkins_trustedip]
+    source_ranges = [module.vm.jenkinsip]
     target_tags = [var.jenkinstags]
 }
 

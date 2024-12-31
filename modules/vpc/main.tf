@@ -43,8 +43,8 @@ resource "google_compute_subnetwork" "gke_cluster_subnetwork" {
         for_each = var.gke_cluster_ip_cidr
         
         content {
-          range_name = secondary_ip_range.key
-          ip_cidr_range = secondary_ip_range.value
+          range_name = var.gke_cluster_ip_cidr.key
+          ip_cidr_range = var.gke_cluster_ip_cidr.value
         }
      }
      
