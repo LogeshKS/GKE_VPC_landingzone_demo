@@ -8,8 +8,10 @@ resource "google_compute_firewall" "allow_ssh_bastion" {
       ports = ["22"]
     }
 
-    source_ranges = [module.vm.bastionip]# Replace with your trusted IP
-    target_tags = [var.bastiontags]
+    source_ranges = [google_compute_instance.bastion_host.network_interface[0].access_config[0].nat_ip]
+    target_tags = var.bastiontags
+
+depends_on = [ google_compute_instance.bastion_host ]
 
 }
 
@@ -23,8 +25,10 @@ resource "google_compute_firewall" "allow_http_jenkins" {
       ports = ["8080", "9090"]
     }
 
-    source_ranges = [module.vm.jenkinsip]
-    target_tags = [var.jenkinstags]
+    source_ranges = [google_compute_instance.jenkins_server.network_interface[0].network_ip]
+    target_tags = var.jenkinstags
+
+  depends_on = [ google_compute_instance.jenkins_server ]
 }
 
 # Allow GKE bastion to access GKE API
@@ -38,8 +42,8 @@ resource "google_compute_firewall" "allow_bastion_jenkins_to_gke" {
     ports    = ["443"] # Kubernetes API server
   }
 
-  source_tags = [var.bastiontags]
-  target_tags = [var.gkeclustertags]
+  source_tags = var.bastiontags
+  target_tags = var.gkeclustertags
 }
 
 

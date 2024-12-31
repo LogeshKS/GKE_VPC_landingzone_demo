@@ -17,8 +17,10 @@ variable "regions" {
 
 #gkesubnet
 variable "gkeclustername" {}
-variable "subnet_cidr_ranges" {}
-variable "gke_cluster_ip_cidr" {}
+variable "subnet_cidr_ranges" {
+  
+}
+#variable "gke_cluster_ip_cidr" {}
 
 #router
 variable "nat-routername" {}
@@ -26,3 +28,10 @@ variable "nat-routername" {}
 #natgateway
 variable "natgateway" {}
 
+variable "pod_cidr_ranges" {
+  
+}
+
+variable "service_cidr_ranges" {
+  
+}

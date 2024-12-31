@@ -11,5 +11,12 @@ output "public_subnet" {
 }
 
 output "gke_cluster_subnetwork" {
-    value = google_compute_subnetwork.gke_cluster_subnetwork.id
+   value = {
+    for k, subnetwork in google_compute_subnetwork.gke_cluster_subnetwork :
+    k => {
+      name   = subnetwork.name
+      region = subnetwork.region
+      cidr   = subnetwork.ip_cidr_range
+    }
+  }
 }
