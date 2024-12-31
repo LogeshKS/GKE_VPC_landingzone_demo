@@ -21,9 +21,9 @@ module "vpc" {
 
     gkeclustername = "${local.env}-${var.gkeclustername}"
     subnet_cidr_ranges = var.subnet_cidr_ranges
-
-    gke_cluster_ip_cidr = var.gke_cluster_ip_cidr
-    
+    pod_cidr_ranges = var.pod_cidr_ranges
+    service_cidr_ranges = var.service_cidr_ranges
+   # gke_cluster_ip_cidr = var.gke_cluster_ip_cidr    
     nat-routername = "${local.env}-${var.nat-routername}"
 
     natgateway = "${local.env}-${var.natgateway}"
@@ -39,8 +39,11 @@ module "gke" {
     regions = var.regions
     gke_cluster_name = "${local.env}-${var.gkeclustername}"
     vpcid = module.vpc.vpcid
-    gke_cluster_subnetwork = module.vpc.gke_cluster_subnetwork
-  
+    master_ipv4_cidr_block = var.master_ipv4_cidr_block
+    gke_cluster_subnetwork = {
+    for region in var.regions : region => module.vpc.gke_cluster_subnetwork[region].name
+  }
+    gkeclustertags = var.gkeclustertags
 }
 
 module "vm" {
@@ -51,20 +54,20 @@ module "vm" {
     bastionmachinetype = var.bastionmachinetype
     regions = var.regions
     public_subnetid = module.vpc.public_subnet
-    bastiontags = "${local.env}-${var.bastiontags}"
+    bastiontags = var.bastiontags
     bastion_image = var.bastion_image
    
 
     jenkinsmachinetype = var.jenkinsmachinetype
     jenkinshostname = "${local.env}-${var.jenkinshostname}"
     jenkinsimage = var.jenkinsimage
-    jenkinstags = "${local.env}-${var.jenkinstags}"
+    jenkinstags = var.jenkinstags
 
     private_subnetid = module.vpc.private_subnetid
  
 
     vpcid = module.vpc.vpcid
-    gkeclustertags = module.gke.tags
+    gkeclustertags = var.gkeclustertags
 
   
 }

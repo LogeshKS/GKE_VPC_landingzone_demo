@@ -8,7 +8,6 @@ variable "projectid" {
 
 #vpc
 variable "vpcname" {}
-variable "projectid" {}
 variable "routing_mode" {}
 variable "mtu" {}
 
@@ -26,7 +25,7 @@ variable "regions" {
 #gkesubnet
 variable "gkeclustername" {}
 variable "subnet_cidr_ranges" {}
-variable "gke_cluster_ip_cidr" {}
+#variable "gke_cluster_ip_cidr" {}
 
 #router
 variable "nat-routername" {}
@@ -49,4 +48,13 @@ variable "jenkinshostname" {}
 variable "gkeclustertags" {}
 
 
+variable "pod_cidr_ranges" {
+  
+}
+variable "service_cidr_ranges" {
+  
+}
 
+variable "master_ipv4_cidr_block" {
+  
+}
