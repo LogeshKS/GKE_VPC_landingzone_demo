@@ -20,23 +20,23 @@ resource "google_compute_instance" "bastion_host" {
 }
 
 
-resource "google_compute_instance" "jenkins_server" {
-  name         = var.jenkinshostname
-  machine_type = var.jenkinsmachinetype
-  zone         = "${var.regions[0]}-b"
+# resource "google_compute_instance" "jenkins_server" {
+#   name         = var.jenkinshostname
+#   machine_type = var.jenkinsmachinetype
+#   zone         = "${var.regions[0]}-b"
 
-  tags = var.jenkinstags
+#   tags = var.jenkinstags
 
-  boot_disk {
-    initialize_params {
-      image = var.jenkinsimage
-    }
-  }
+#   boot_disk {
+#     initialize_params {
+#       image = var.jenkinsimage
+#     }
+#   }
 
-  network_interface {
-    subnetwork = var.private_subnetid
-  }
+#   network_interface {
+#     subnetwork = var.private_subnetid
+#   }
 
-  metadata_startup_script = file("/home/logesh/Devops/GKE_VPC_landingzone_demo/modules/vm/jenkinsstartup.sh")
-}
+#   metadata_startup_script = file("/home/logesh/Devops/GKE_VPC_landingzone_demo/modules/vm/jenkinsstartup.sh")
+# }
 

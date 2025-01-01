@@ -9,8 +9,8 @@ variable "public_subnetname" {}
 variable "public_subnet_cidr_range" {}
 
 #private_subnetname
-variable "subnetname" {}
-variable "private_subnet_iprange" {}
+# variable "subnetname" {}
+# variable "private_subnet_iprange" {}
 variable "regions" {
   type = list(string)
 }

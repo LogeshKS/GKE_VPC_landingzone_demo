@@ -15,26 +15,26 @@ depends_on = [ google_compute_instance.bastion_host ]
 
 }
 
-#firewall to allow http to jenkins from trusted ip
-resource "google_compute_firewall" "allow_http_jenkins" {
-    name = "allow-http-jenkins"
-    network = var.vpcid
+# firewall to allow http to jenkins from trusted ip
+# resource "google_compute_firewall" "allow_http_jenkins" {
+#     name = "allow-http-jenkins"
+#     network = var.vpcid
 
-    allow {
-      protocol = "tcp"
-      ports = ["8080", "9090"]
-    }
+#     allow {
+#       protocol = "tcp"
+#       ports = ["8080", "9090"]
+#     }
 
-    source_ranges = [google_compute_instance.jenkins_server.network_interface[0].network_ip]
-    target_tags = var.jenkinstags
+#     source_ranges = [google_compute_instance.jenkins_server.network_interface[0].network_ip]
+#     target_tags = var.jenkinstags
 
-  depends_on = [ google_compute_instance.jenkins_server ]
-}
+#   depends_on = [ google_compute_instance.jenkins_server ]
+# }
 
 # Allow GKE bastion to access GKE API
 
 resource "google_compute_firewall" "allow_bastion_jenkins_to_gke" {
-  name    = "allow-bastion-jenkins-to-gke"
+  name    = "allow-bastion-to-gke"
   network = var.vpcid
 
   allow {

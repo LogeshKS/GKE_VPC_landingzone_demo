@@ -72,7 +72,7 @@ resource "google_container_node_pool" "node_pool" {
   # Autoscaling for node pool
   autoscaling {
     min_node_count = 1
-    max_node_count = 5
+    max_node_count = 3
   }
 
   depends_on = [google_container_cluster.gke_cluster]

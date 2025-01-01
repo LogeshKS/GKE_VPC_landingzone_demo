@@ -17,7 +17,7 @@ regions = ["us-east1","us-west2"]
 
 #GKE
 
-gkeclustername = "dev-gke-cluster"
+gkeclustername = "gke-cluster"
 
 subnet_cidr_ranges = {
    "us-east1" = "172.16.0.0/20" 
@@ -58,12 +58,12 @@ bastion_image = "projects/ubuntu-os-cloud/global/images/family/ubuntu-2204-lts"
 bastionmachinetype = "e2-micro"
 bastiontags = ["bastion"]
 
-jenkinshostname = "jenkins-host"
-jenkinsimage = "projects/ubuntu-os-cloud/global/images/family/ubuntu-2204-lts"
-jenkinsmachinetype = "e2-standard-4"
-jenkinstags = ["jenkins"]
+# jenkinshostname = "jenkins-host"
+# jenkinsimage = "projects/ubuntu-os-cloud/global/images/family/ubuntu-2204-lts"
+# jenkinsmachinetype = "e2-standard-4"
+# jenkinstags = ["jenkins"]
 
-gkeclustertags = ["cluster1", "cluster2"]
+gkeclustertags = ["gkeclusters"]
 
 
 
