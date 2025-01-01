@@ -2,7 +2,8 @@ terraform {
   required_providers {
     google ={
         source = "hashicorp/google"
-        version = "~>=6.0"
+        version = "~>6.0.0"
+        
     }
   }
 }
@@ -11,11 +12,12 @@ terraform {
 provider "google" {
   project = var.projectid
   region  = var.regions[0]  # Set the default region if needed (used for provider context)
-  zone    = var.zones[0]    # Set a default zone (used for compute resources like instance creation)
+  credentials = file("/home/logesh/Devops/dulcet-glazing-444913-i8-cf78e067d898.json")  # Path to your service account JSON credentials file
 }
 
 provider "google" {
   alias   = "region2"
   project = var.projectid
   region  = var.regions[1]  # Use second region from the variable list
+  credentials = file("/home/logesh/Devops/dulcet-glazing-444913-i8-cf78e067d898.json")  # Path to your service account JSON credentials file
 }

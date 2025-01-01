@@ -4,13 +4,10 @@ variable "env" {
 variable "projectid" {
   
 }
-variable "regions" {
-  
-}
+
 
 #vpc
 variable "vpcname" {}
-variable "projectid" {}
 variable "routing_mode" {}
 variable "mtu" {}
 
@@ -28,7 +25,7 @@ variable "regions" {
 #gkesubnet
 variable "gkeclustername" {}
 variable "subnet_cidr_ranges" {}
-variable "gke_cluster_ip_cidr" {}
+#variable "gke_cluster_ip_cidr" {}
 
 #router
 variable "nat-routername" {}
@@ -37,30 +34,27 @@ variable "nat-routername" {}
 variable "natgateway" {}
 
 
+#VM
 variable "bastionhostname" {}
 variable "bastion_image" {}
 variable "bastionmachinetype" {}
-variable "private_subnetid" {}
-variable "public_subnetid" {}
+
 variable "bastiontags" {}
 variable "jenkinstags" {}
 variable "jenkinsmachinetype" {}
 variable "jenkinsimage" {}
 variable "jenkinshostname" {}
-variable "vpcid" {}
-variable "bastion_trustedip" {}
-variable "jenkins_trustedip" {}
+
 variable "gkeclustertags" {}
 
-variable "gke_cluster_name" {
+
+variable "pod_cidr_ranges" {
   
 }
-variable "gke_cluster_subnetwork" {
+variable "service_cidr_ranges" {
   
 }
-variable "gke_cluster_ipv4_cidr" {
-  
-}
-variable "gke_services_ipv4_cidr" {
+
+variable "master_ipv4_cidr_block" {
   
 }

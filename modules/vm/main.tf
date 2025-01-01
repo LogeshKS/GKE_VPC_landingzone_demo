@@ -1,9 +1,9 @@
 resource "google_compute_instance" "bastion_host" {
   name         = var.bastionhostname
   machine_type = var.bastionmachinetype
-  zone         = var.regions[0]
+  zone         = "${var.regions[0]}-b"
 
-  tags = [var.bastiontags]
+  tags = var.bastiontags
 
   boot_disk {
     initialize_params {
@@ -16,16 +16,16 @@ resource "google_compute_instance" "bastion_host" {
     access_config {}
   }
 
-  metadata_startup_script = file("./bastionscript.sh")
+  metadata_startup_script = file("/home/logesh/Devops/GKE_VPC_landingzone_demo/modules/vm/firewallrules.tf")
 }
 
 
 resource "google_compute_instance" "jenkins_server" {
   name         = var.jenkinshostname
   machine_type = var.jenkinsmachinetype
-  zone         = var.regions[0]
+  zone         = "${var.regions[0]}-b"
 
-  tags = [var.jenkinstags]
+  tags = var.jenkinstags
 
   boot_disk {
     initialize_params {
@@ -37,6 +37,6 @@ resource "google_compute_instance" "jenkins_server" {
     subnetwork = var.private_subnetid
   }
 
-  metadata_startup_script = file("./jenkinsstartup.sh")
+  metadata_startup_script = file("/home/logesh/Devops/GKE_VPC_landingzone_demo/modules/vm/jenkinsstartup.sh")
 }
 

@@ -11,6 +11,5 @@ variable "jenkinsimage" {}
 variable "jenkinshostname" {}
 
 variable "vpcid" {}
-variable "bastion_trustedip" {}
-variable "jenkins_trustedip" {}
+
 variable "gkeclustertags" {}
