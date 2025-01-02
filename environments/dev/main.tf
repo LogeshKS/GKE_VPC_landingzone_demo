@@ -58,13 +58,12 @@ module "vm" {
     bastiontags = var.bastiontags
     bastion_image = var.bastion_image
    
-
     # jenkinsmachinetype = var.jenkinsmachinetype
     # jenkinshostname = "${local.env}-${var.jenkinshostname}"
     # jenkinsimage = var.jenkinsimage
     # jenkinstags = var.jenkinstags
 
-    private_subnetid = module.vpc.private_subnetid
+    # private_subnetid = module.vpc.private_subnetid
  
 
     vpcid = module.vpc.vpcid

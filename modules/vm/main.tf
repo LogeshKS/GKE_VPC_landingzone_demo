@@ -16,7 +16,7 @@ resource "google_compute_instance" "bastion_host" {
     access_config {}
   }
 
-  metadata_startup_script = file("./firewallrules.tf")
+  metadata_startup_script = file("./bastionscript.sh")
 }
 
 
