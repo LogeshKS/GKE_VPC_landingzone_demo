@@ -16,7 +16,7 @@ resource "google_compute_instance" "bastion_host" {
     access_config {}
   }
 
-  metadata_startup_script = file("/home/logesh/Devops/GKE_VPC_landingzone_demo/modules/vm/firewallrules.tf")
+  metadata_startup_script = file("./firewallrules.tf")
 }
 
 
