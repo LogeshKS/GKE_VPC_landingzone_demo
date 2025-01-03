@@ -11,6 +11,9 @@ properties([
 ])
 pipeline {
     agent any
+    environment {
+        GOOGLE_CREDENTIALS = credentials('terraform_sa')  // Jenkins credential ID
+    }
     stages {
         stage('Preparing') {
             steps {
@@ -19,25 +22,25 @@ pipeline {
         }
         stage('Git Pulling') {
             steps {
-                git branch: 'master', url: 'https://github.com/LogeshKS/GKE_VPC_landingzone_demo.git'
+                git branch: 'feature1', url: 'https://github.com/LogeshKS/GKE_VPC_landingzone_demo.git'
             }
         }
         stage('Init') {
             steps {
                     sh 'terraform -chdir=environments/dev/ init'
                 }
-            }
+            
         }
         stage('Validate') {
             steps {
-                withAWS(credentials: 'aws-creds', region: 'us-east-1') {
+                
                 sh 'terraform -chdir=environments/dev/ validate'
-                }
+                
             }
         }
         stage('Action') {
             steps {
-                withAWS(credentials: 'aws-creds', region: 'us-east-1') {
+                
                     script {    
                         if (params.Terraform_Action == 'plan') {
                             sh "terraform -chdir=environments/dev/ plan -var-file=${params.Environment}.tfvars"
@@ -49,7 +52,7 @@ pipeline {
                             error "Invalid value for Terraform_Action: ${params.Terraform_Action}"
                         }
                     }
-                }
+                
             }
         }
     }
