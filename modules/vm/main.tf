@@ -19,15 +19,19 @@ resource "google_compute_instance" "bastion_host" {
  metadata = {
     startup-script = <<-EOT
       #!/bin/bash
-      sudo apt update
-      sudo apt install curl -y
-      sudo curl -LO "https://dl.k8s.io/release/v1.28.4/bin/linux/amd64/kubectl"
-      sudo chmod +x kubectl
-      sudo mv kubectl /usr/local/bin/
-      kubectl version --client
+      sudo wget https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-cli-430.0.0-linux-x86_64.tar.gz
+      sudo tar -xvf google-cloud-cli-430.0.0-linux-x86_64.tar.gz
+      sudo ./google-cloud-sdk/install.sh
+      echo 'export PATH=$PATH:$HOME/google-cloud-sdk/bin' >> ~/.bashrc
+      source ~/.bashrc
+      sudo gcloud components install gke-gcloud-auth-plugin
+      export USE_GKE_GCLOUD_AUTH_PLUGIN=True
+      echo 'export USE_GKE_GCLOUD_AUTH_PLUGIN=True' >> ~/.bashrc
+      source ~/.bashrc
+      sudo gcloud components install kubectl
 
     EOT
-}
+  }
 
 }
 # resource "google_compute_instance" "jenkins_server" {

@@ -51,7 +51,7 @@ resource "google_container_node_pool" "node_pool" {
   #count       = length(var.regions)
   for_each = toset(var.regions)
   #name        = "default-node-pool-${var.regions[count.index]}"
-  name        = "default-node-pool-${each.key}"
+  name        = "dev-node-pool-${each.key}"
   cluster     = google_container_cluster.gke_cluster[each.key].name
   #cluster     = google_container_cluster.gke_cluster[count.index].name
   #location    = var.regions[count.index]
