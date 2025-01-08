@@ -42,7 +42,7 @@ module "gke" {
     for region in var.regions : region => module.vpc.gke_cluster_subnetwork[region].name
   }
     gkeclustertags = var.gkeclustertags
-    bastionip = module.vm.bastionip
+    bastionip = var.public_subnet_cidr_range
     display_name = "Bastion IP"
 }
 

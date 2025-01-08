@@ -16,7 +16,10 @@ resource "google_container_cluster" "gke_cluster" {
   network    = var.vpcid
   
   subnetwork = var.gke_cluster_subnetwork[each.key]
+
   
+  enable_multi_networking = true
+   
   # Enable private cluster configuration
   private_cluster_config {
     enable_private_nodes = true
@@ -30,22 +33,15 @@ resource "google_container_cluster" "gke_cluster" {
     
     cluster_secondary_range_name  = "pod-range-${each.key}"
     services_secondary_range_name = "service-range-${each.key}"
+
   }
 
   master_authorized_networks_config {
-    
-    # cidr_blocks {
-    #   cidr_block = "172.16.0.0/20"  # You can replace this with your specific authorized IPs
-    #   display_name = "cluster1ip"
-    # }
-    # cidr_blocks {
-    #   cidr_block = "172.17.0.0/20"
-    #   display_name = "cluster2ip"
-    # }
 
     cidr_blocks {
       cidr_block = var.bastionip
       display_name = var.display_name
+
     }
   
     
