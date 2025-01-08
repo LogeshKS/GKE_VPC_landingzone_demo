@@ -19,3 +19,9 @@ variable "gkeclustertags" {
 variable "master_ipv4_cidr_block" {
   
 }
+variable "bastionip" {
+  
+}
+variable "display_name" {
+  
+}

@@ -19,27 +19,12 @@ resource "google_compute_subnetwork" "public_subnet" {
     depends_on = [ google_compute_network.mainvpc ]
 }
 
-# resource "google_compute_subnetwork" "private_subnet" {
-    
-#     name = var.subnetname
-#     ip_cidr_range = var.private_subnet_iprange
-#     region = var.regions[0]
-#     network = google_compute_network.mainvpc.id
-#     private_ip_google_access =  true
-
-#     depends_on = [ google_compute_network.mainvpc ]
-
-# }
 
 resource "google_compute_subnetwork" "gke_cluster_subnetwork" {
-     #count = length(var.regions)
+     
      for_each = var.subnet_cidr_ranges
-     #name    = "${var.gkeclustername}-${var.regions[count.index]}"
      name = "${var.gkeclustername}-${each.key}-subnet"
-     #ip_cidr_range = var.subnet_cidr_ranges[count.index]
-     #ip_cidr_range = var.subnet_cidr_ranges[each.index] 
      ip_cidr_range = each.value
-     #region  = var.regions[count.index]
      region = each.key
      network = google_compute_network.mainvpc.id
      private_ip_google_access = true
@@ -53,14 +38,6 @@ resource "google_compute_subnetwork" "gke_cluster_subnetwork" {
         range_name    = "service-range-${each.key}"
         ip_cidr_range = var.service_cidr_ranges[each.key]
     }
-
-  #   dynamic "secondary_ip_range" {
-  #      for_each = var.gke_cluster_ip_cidr
-  #      content {
-  #        range_name = each.key
-  #        ip_cidr_range = each.value
-  #      }
-  #   }
      
     depends_on = [ google_compute_network.mainvpc ]
 }
