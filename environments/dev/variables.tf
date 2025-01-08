@@ -16,8 +16,8 @@ variable "public_subnetname" {}
 variable "public_subnet_cidr_range" {}
 
 #private_subnetname
-variable "private_subnetname" {}
-variable "private_subnet_iprange" {}
+# variable "private_subnetname" {}
+# variable "private_subnet_iprange" {}
 variable "regions" {
   type = list(string)
 }
@@ -40,10 +40,10 @@ variable "bastion_image" {}
 variable "bastionmachinetype" {}
 
 variable "bastiontags" {}
-variable "jenkinstags" {}
-variable "jenkinsmachinetype" {}
-variable "jenkinsimage" {}
-variable "jenkinshostname" {}
+# variable "jenkinstags" {}
+# variable "jenkinsmachinetype" {}
+# variable "jenkinsimage" {}
+# variable "jenkinshostname" {}
 
 variable "gkeclustertags" {}
 

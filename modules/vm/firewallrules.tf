@@ -8,42 +8,57 @@ resource "google_compute_firewall" "allow_ssh_bastion" {
       ports = ["22"]
     }
 
-    source_ranges = [google_compute_instance.bastion_host.network_interface[0].access_config[0].nat_ip]
+    source_ranges = ["0.0.0.0/0"]
     target_tags = var.bastiontags
 
-depends_on = [ google_compute_instance.bastion_host ]
 
 }
 
-#firewall to allow http to jenkins from trusted ip
-resource "google_compute_firewall" "allow_http_jenkins" {
-    name = "allow-http-jenkins"
-    network = var.vpcid
 
-    allow {
-      protocol = "tcp"
-      ports = ["8080", "9090"]
-    }
-
-    source_ranges = [google_compute_instance.jenkins_server.network_interface[0].network_ip]
-    target_tags = var.jenkinstags
-
-  depends_on = [ google_compute_instance.jenkins_server ]
-}
-
-# Allow GKE bastion to access GKE API
-
-resource "google_compute_firewall" "allow_bastion_jenkins_to_gke" {
-  name    = "allow-bastion-jenkins-to-gke"
+resource "google_compute_firewall" "allow_bastion_to_gke" {
+  name    = "allow-bastion-to-gke"
   network = var.vpcid
 
   allow {
     protocol = "tcp"
-    ports    = ["443"] # Kubernetes API server
+    ports    = ["22"] # Kubernetes API server
   }
 
-  source_tags = var.bastiontags
+  source_ranges = [google_compute_instance.bastion_host.network_interface[0].access_config[0].nat_ip]
   target_tags = var.gkeclustertags
+
+  depends_on = [ google_compute_instance.bastion_host ]
 }
 
 
+resource "google_compute_firewall" "allow_bastion_to_gke_api" {
+  name    = "allow-bastion-to-gke-api"
+  network = var.vpcid
+ 
+  allow {
+    protocol = "tcp"
+    ports    = ["443"]
+  }
+
+  source_ranges = [google_compute_instance.bastion_host.network_interface[0].access_config[0].nat_ip]
+
+  target_tags = var.gkeclustertags 
+  depends_on = [ google_compute_instance.bastion_host ]
+}
+
+resource "google_compute_firewall" "allow_bastion_to_gke_node_ports" {
+  name    = "allow-bastion-to-gke-node-ports"
+  network = "default"
+
+  
+  allow {
+    protocol = "tcp"
+    ports    = ["10250", "443"]  # Kubelet and Kubernetes API
+  }
+
+  source_ranges = [google_compute_instance.bastion_host.network_interface[0].access_config[0].nat_ip]  # Replace with your Bastion host's external IP
+
+  target_tags = var.gkeclustertags  # Add this tag to your GKE worker nodes
+
+  depends_on = [ google_compute_instance.bastion_host ]
+}

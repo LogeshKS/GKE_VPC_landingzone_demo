@@ -19,17 +19,17 @@ resource "google_compute_subnetwork" "public_subnet" {
     depends_on = [ google_compute_network.mainvpc ]
 }
 
-resource "google_compute_subnetwork" "private_subnet" {
+# resource "google_compute_subnetwork" "private_subnet" {
     
-    name = var.subnetname
-    ip_cidr_range = var.private_subnet_iprange
-    region = var.regions[0]
-    network = google_compute_network.mainvpc.id
-    private_ip_google_access =  true
+#     name = var.subnetname
+#     ip_cidr_range = var.private_subnet_iprange
+#     region = var.regions[0]
+#     network = google_compute_network.mainvpc.id
+#     private_ip_google_access =  true
 
-    depends_on = [ google_compute_network.mainvpc ]
+#     depends_on = [ google_compute_network.mainvpc ]
 
-}
+# }
 
 resource "google_compute_subnetwork" "gke_cluster_subnetwork" {
      #count = length(var.regions)
@@ -67,8 +67,9 @@ resource "google_compute_subnetwork" "gke_cluster_subnetwork" {
 
 #router configuration
 resource "google_compute_router" "nat_router" {
-    name = var.nat-routername
-    region = var.regions[0]
+    count = length(var.regions)
+    name = "${var.nat-routername}-${var.regions[count.index]}"
+    region = var.regions[count.index]
     network = google_compute_network.mainvpc.id
 
     depends_on = [ google_compute_network.mainvpc ]
@@ -76,9 +77,10 @@ resource "google_compute_router" "nat_router" {
 
 #nat gateway
 resource "google_compute_router_nat" "natgateway" {
-    name = var.natgateway
-    router = google_compute_router.nat_router.name
-    region = var.regions[0]
+    count = length(var.regions)
+    name = "${var.natgateway}-${var.regions[count.index]}"
+    router = google_compute_router.nat_router[count.index].name
+    region = var.regions[count.index]
     nat_ip_allocate_option = "AUTO_ONLY"
     source_subnetwork_ip_ranges_to_nat = "ALL_SUBNETWORKS_ALL_IP_RANGES"
 

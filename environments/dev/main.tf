@@ -16,8 +16,8 @@ module "vpc" {
     public_subnetname = "${local.env}-${var.public_subnetname}"
     public_subnet_cidr_range = var.public_subnet_cidr_range
 
-    subnetname = "${local.env}-${var.private_subnetname}"
-    private_subnet_iprange = var.private_subnet_iprange
+    # subnetname = "${local.env}-${var.private_subnetname}"
+    # private_subnet_iprange = var.private_subnet_iprange
 
     gkeclustername = "${local.env}-${var.gkeclustername}"
     subnet_cidr_ranges = var.subnet_cidr_ranges
@@ -29,6 +29,7 @@ module "vpc" {
     natgateway = "${local.env}-${var.natgateway}"
 
     regions = var.regions
+
 }
 
 module "gke" {
@@ -57,13 +58,12 @@ module "vm" {
     bastiontags = var.bastiontags
     bastion_image = var.bastion_image
    
+    # jenkinsmachinetype = var.jenkinsmachinetype
+    # jenkinshostname = "${local.env}-${var.jenkinshostname}"
+    # jenkinsimage = var.jenkinsimage
+    # jenkinstags = var.jenkinstags
 
-    jenkinsmachinetype = var.jenkinsmachinetype
-    jenkinshostname = "${local.env}-${var.jenkinshostname}"
-    jenkinsimage = var.jenkinsimage
-    jenkinstags = var.jenkinstags
-
-    private_subnetid = module.vpc.private_subnetid
+    # private_subnetid = module.vpc.private_subnetid
  
 
     vpcid = module.vpc.vpcid
