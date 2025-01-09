@@ -17,8 +17,6 @@ resource "google_container_cluster" "gke_cluster" {
   
   subnetwork = var.gke_cluster_subnetwork[each.key]
 
-  
-  enable_multi_networking = true
    
   # Enable private cluster configuration
   private_cluster_config {
