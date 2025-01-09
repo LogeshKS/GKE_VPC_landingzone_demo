@@ -1,7 +1,3 @@
-data "local_file" "bastion_script" {
-  filename = "/home/logesh/Devops/GKE_VPC_landingzone_demo/environments/dev/bastionscript.sh"
-}
-
 resource "google_compute_instance" "bastion_host" {
   name         = var.bastionhostname
   machine_type = var.bastionmachinetype
@@ -21,7 +17,7 @@ resource "google_compute_instance" "bastion_host" {
   }
 
  metadata = {
-    startup-script = "data.local_file.bastion_script.content"
+    "startup-script-url" = "gs://installation_scripts/bastionscript.sh"
   }
 
 }
