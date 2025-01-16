@@ -23,8 +23,8 @@ subnet_cidr_ranges = {
 }
 
 pod_cidr_ranges = {
-    "us-east1" = "192.169.0.0/20" 
-    "us-west2" = "192.170.0.0/20"
+    "us-east1" = "10.2.0.0/20" 
+    "us-west2" = "10.3.0.0/20"
 }   
 
 service_cidr_ranges ={
